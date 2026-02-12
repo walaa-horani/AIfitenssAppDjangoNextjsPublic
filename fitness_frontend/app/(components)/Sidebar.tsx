@@ -16,7 +16,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:flex flex-col w-64 bg-card border-r border-primary/20 p-4 min-h-screen">
+    <aside className="flex flex-col w-64 bg-card border-r border-primary/20 p-4 min-h-screen">
       <h2 className="text-xl font-semibold mb-6 bg-linear-to-r from-primary to-glow-strong bg-clip-text text-transparent">
         Fitness Dashboard
       </h2>

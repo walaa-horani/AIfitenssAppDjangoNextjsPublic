@@ -24,7 +24,7 @@ function page() {
 
   const fetchProgress = async () => {
     try {
-      const res = await axios.get("https://aifitnessappnew.pythonanywhere.com/progress/",
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/progress/`,
         { headers: { Authorization: `Token ${token}` } }
       )
       setLogs(res.data);
@@ -43,7 +43,7 @@ function page() {
     }
 
     try {
-      const res = await axios.post("https://aifitnessappnew.pythonanywhere.com/progress/", form,
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/progress/`, form,
         { headers: { Authorization: `Token ${token}` } }
       )
 

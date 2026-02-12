@@ -16,8 +16,14 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv()
 
+env_path = BASE_DIR / '.env'
+print(f"🔍 Loading .env from: {env_path}")
+if env_path.exists():
+    print("✅ .env file found!")
+    load_dotenv(env_path)
+else:
+    print("❌ .env file NOT found at expected path!")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -31,6 +37,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
+
+print(f"🔑 OPENAI_API_KEY loaded: {'Yes' if OPENAI_API_KEY else 'No'}")
+print(f"🔑 OPENROUTER_API_KEY loaded: {'Yes' if OPENROUTER_API_KEY else 'No'}")
 
 # Application definition
 

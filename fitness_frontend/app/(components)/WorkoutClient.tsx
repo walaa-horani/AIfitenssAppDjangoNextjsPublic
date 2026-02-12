@@ -35,7 +35,7 @@ export default function WorkoutClient() {
 
             if (shouldGenerate) {
                 const res = await axios.post(
-                    "https://aifitnessappnew.pythonanywhere.com/generate-workout/",
+                    `${process.env.NEXT_PUBLIC_API_URL}/generate-workout/`,
                     {},
                     {
                         headers: {
@@ -52,7 +52,7 @@ export default function WorkoutClient() {
                 window.history.replaceState({}, "", url.toString())
             } else {
                 const res = await axios.get(
-                    "https://aifitnessappnew.pythonanywhere.com/workout-plans/",
+                    `${process.env.NEXT_PUBLIC_API_URL}/workout-plans/`,
                     {
                         headers: { Authorization: `Token ${token}` },
                     }

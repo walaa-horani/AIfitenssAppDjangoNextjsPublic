@@ -12,7 +12,8 @@ from fitness.openrouter import call_openrouter
 from fitness.serializers import MealPlanSerializer, ProgressLogSerializer, UserProfileSerializer, WorkoutPlanSerializer
 from .models import MealPlan, ProgressLog, UserProfile, WorkoutPlan
 
-client = OpenAI(api_key=settings.OPENAI_API_KEY)
+# Remove module-level client initialization to prevent startup errors
+# client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 def save_exercise_image(image_data, exercise_name):
@@ -33,23 +34,42 @@ def save_exercise_image(image_data, exercise_name):
 
 def generate_thumbnail(exercise_name):
     """Generate AI image for exercise"""
-    prompt = f"A person doing {exercise_name} exercise, gym setting, clean illustration style"
     
-    # Generate with DALL-E
-    response = client.images.generate(
-        model="dall-e-3",
-        prompt=prompt,
-        size="1024x1024",
-        quality="standard",
-        n=1
-    )
+    # Initialize client here to handle missing API key gracefully
+    api_key = settings.OPENAI_API_KEY
+    if not api_key:
+        print(f"⚠️ Warning: OPENAI_API_KEY is missing. Skipping image generation for {exercise_name}.")
+        return None  # Or return a placeholder URL
+
+    try:
+        client = OpenAI(api_key=api_key)
+        prompt = f"A person doing {exercise_name} exercise, gym setting, clean illustration style"
+        
+        # Generate with DALL-E
+        response = client.images.generate(
+            model="dall-e-3",
+            prompt=prompt,
+            size="1024x1024",
+            quality="standard",
+            n=1
+        )
+    except Exception as e:
+        print(f"❌ OpenAI Error in generate_thumbnail: {e}")
+        return None
     
+    if not response:
+        return None
+
     # Download and save image
-    image_url = response.data[0].url
-    img_response = requests.get(image_url, timeout=30)
-    img_response.raise_for_status()
-    
-    return save_exercise_image(img_response.content, exercise_name)
+    try:
+        image_url = response.data[0].url
+        img_response = requests.get(image_url, timeout=30)
+        img_response.raise_for_status()
+        
+        return save_exercise_image(img_response.content, exercise_name)
+    except Exception as e:
+        print(f"❌ Error saving image: {e}")
+        return None
 
 
 # ================== WORKOUT GENERATION ==================

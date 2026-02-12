@@ -17,7 +17,7 @@ function page() {
 
   useEffect(() => {
     const token = localStorage.getItem("token")
-    axios.get("https://aifitnessappnew.pythonanywhere.com/progress/", {
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/progress/`, {
       headers: { Authorization: `Token ${token}` },
 
 
@@ -35,7 +35,7 @@ function page() {
   const generateAiTip = async () => {
     const token = localStorage.getItem("token")
     try {
-      const res = await axios.post("https://aifitnessappnew.pythonanywhere.com/chat/",
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/chat/`,
         { message: "Give me a short fitness motivation tip" },
         { headers: { Authorization: `Token ${token}` } }
       )
